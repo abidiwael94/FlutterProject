@@ -5,7 +5,7 @@ import 'package:project_flutter/Models/userRole.dart';
 
 class User {
   final String id;
-  final String name;
+  final String username;
   final String email;
   final UserRole role;
 
@@ -15,7 +15,7 @@ class User {
 
   User({
     required this.id,
-    required this.name,
+    required this.username,
     required this.email,
     required this.role,
     List<Reservation>? reservations,
