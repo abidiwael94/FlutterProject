@@ -53,4 +53,3 @@ Ce projet a été développé pour :
 * `services/` : API, Firestore, Auth
 * `navigation/` : routes, Drawer, BottomNavigationBar
 
-Si tu veux, je peux aussi rédiger une **version courte et impactante** pour l’afficher directement sur GitHub, avec badges et résumé technique prêt à copier-coller. Veux‑tu que je fasse ça ?
