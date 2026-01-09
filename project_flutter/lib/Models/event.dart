@@ -11,7 +11,6 @@ class Event {
   String adminId; // The admin who created this event
   List<Reservation> reservations = [];
   List<Favorite> favorites = [];
-
   Event({
     required this.id,
     required this.title,
