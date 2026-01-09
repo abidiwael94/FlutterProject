@@ -7,8 +7,6 @@ class Event {
   final String description;
   final DateTime date;
 
-  // Relations
-  String adminId; // The admin who created this event
   List<Reservation> reservations = [];
   List<Favorite> favorites = [];
 
@@ -17,7 +15,6 @@ class Event {
     required this.title,
     required this.description,
     required this.date,
-    required this.adminId,
     List<Reservation>? reservations,
     List<Favorite>? favorites,
   }) {

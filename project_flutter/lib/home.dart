@@ -15,20 +15,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
-  @override
-  void initState() {
-    super.initState();
-
-    // Print the user role to console
-    print('User role: ${widget.user.role}');
-  }
-
   List<Widget> get _screens {
     final screens = [
       const EventsScreen(),
       const ReservationsScreen(),
       const FavoritesScreen(),
-      ProfilePage(admin: widget.user),
+      ProfileScreen(user: widget.user),
     ];
 
     if (widget.user.role == UserRole.admin) {
@@ -99,7 +91,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-// --- Events Screen ---
 class EventsScreen extends StatelessWidget {
   const EventsScreen({super.key});
   @override
@@ -113,7 +104,6 @@ class EventsScreen extends StatelessWidget {
   }
 }
 
-// --- Reservations Screen ---
 class ReservationsScreen extends StatelessWidget {
   const ReservationsScreen({super.key});
   @override
@@ -127,7 +117,6 @@ class ReservationsScreen extends StatelessWidget {
   }
 }
 
-// --- Favorites Screen ---
 class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({super.key});
   @override

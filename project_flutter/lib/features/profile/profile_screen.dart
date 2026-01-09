@@ -1,59 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_flutter/Models/user.dart';
+import 'package:project_flutter/features/profile/ProfileEditPage.dart';
 
-class ProfilePage extends StatefulWidget {
-  final User admin;
-  const ProfilePage({super.key, required this.admin});
+class ProfileScreen extends StatefulWidget {
+  final User user;
+  const ProfileScreen({super.key, required this.user});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
-  late TextEditingController nameController;
-  late TextEditingController emailController;
-
-  final _firestore = FirebaseFirestore.instance;
+class _ProfileScreenState extends State<ProfileScreen> {
+  late User currentUser;
 
   @override
   void initState() {
     super.initState();
-    nameController = TextEditingController(text: widget.admin.username);
-    emailController = TextEditingController(text: widget.admin.email);
-  }
-
-  Future<void> _save() async {
-    await _firestore.collection('users').doc(widget.admin.id).update({
-      'name': nameController.text.trim(),
-      'email': emailController.text.trim(),
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Profile updated")),
-    );
+    currentUser = widget.user;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            TextField(
-              controller: nameController,
-              decoration: const InputDecoration(labelText: "Name"),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: emailController,
-              decoration: const InputDecoration(labelText: "Email"),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(onPressed: _save, child: const Text("Save")),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.person, size: 80, color: Colors.blue),
+          const SizedBox(height: 16),
+          Text('Username: ${currentUser.username}', style: const TextStyle(fontSize: 24)),
+          Text('Email: ${currentUser.email}', style: const TextStyle(fontSize: 18, color: Colors.grey)),
+          Text('Role: ${currentUser.role.name}', style: const TextStyle(fontSize: 18, color: Colors.grey)),
+          const SizedBox(height: 24),
+          ElevatedButton(
+            onPressed: () async {
+              final updatedUser = await Navigator.push<User>(
+                context,
+                MaterialPageRoute(builder: (_) => ProfileEditPage(user: currentUser)),
+              );
+              if (updatedUser != null) {
+                setState(() {
+                  currentUser = updatedUser;
+                });
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Profile updated!")),
+                );
+              }
+            },
+            child: const Text("Edit Profile"),
+          ),
+        ],
       ),
     );
   }
