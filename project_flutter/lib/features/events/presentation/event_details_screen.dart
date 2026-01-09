@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../Models/event.dart';
+import '../../../Models/event.dart';
 
 class EventDetailsScreen extends StatelessWidget {
   final Event event;

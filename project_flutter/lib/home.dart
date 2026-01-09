@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:project_flutter/Models/user.dart';
 import 'package:project_flutter/Models/user_role.dart';
-import 'package:project_flutter/events/presentation/event_list_screen.dart';
-import 'package:project_flutter/events/providers/event_provider.dart';
+import 'package:project_flutter/features/events/presentation/event_list_screen.dart';
+import 'package:project_flutter/features/events/providers/event_provider.dart';
 import 'package:project_flutter/features/admin/admin_screen.dart';
 import 'package:project_flutter/features/profile/profile_screen.dart';
 import 'package:provider/provider.dart';

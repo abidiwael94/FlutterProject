@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/event_provider.dart';
-import '../../core/views/event_card.dart';
+import '../../../core/views/event_card.dart';
 import 'event_details_screen.dart';
-import '../../Models/user.dart';
+import '../../../Models/user.dart';
 
 class EventListScreen extends StatefulWidget {
   final User user;

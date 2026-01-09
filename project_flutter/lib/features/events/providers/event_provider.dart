@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../Models/event.dart';
-import '../../Models/favorite.dart';
-import '../../Models/reservation.dart';
+import '../../../Models/event.dart';
+import '../../../Models/favorite.dart';
+import '../../../Models/reservation.dart';
 import '../services/event_service.dart';
 
 class EventProvider with ChangeNotifier {
