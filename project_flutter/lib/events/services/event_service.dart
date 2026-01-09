@@ -11,7 +11,6 @@ class EventService {
       return snapshot.docs.map((doc) {
         final data = doc.data();
 
-        // 🔥 SAFE DATE CONVERSION (THE PART YOU ASKED ABOUT)
         DateTime eventDate;
         final rawDate = data['date'];
 

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:project_flutter/Models/user.dart';
 import 'package:project_flutter/Models/user_role.dart';
 import 'package:project_flutter/events/presentation/event_list_screen.dart';
+import 'package:project_flutter/events/providers/event_provider.dart';
 import 'package:project_flutter/features/admin/admin_screen.dart';
 import 'package:project_flutter/features/profile/profile_screen.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   final User user;
@@ -17,19 +19,24 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
   List<Widget> get _screens {
-    final screens = [
-      const EventListScreen(),
-      const ReservationsScreen(),
-      const FavoritesScreen(),
-      ProfileScreen(userId: widget.user.id),
-    ];
 
-    if (widget.user.role == UserRole.admin) {
-      screens.add(AdminPage(user: widget.user));
-    }
+  final screens = [
+    // On met EventProvider autour de EventListScreen et on passe le user correctement
+    ChangeNotifierProvider(
+      create: (_) => EventProvider(),
+      child: EventListScreen(user: widget.user), // <-- user passe ici
+    ),
+    const ReservationsScreen(),
+    const FavoritesScreen(),
+    ProfileScreen(userId: widget.user.id),
+  ];
 
-    return screens;
+  if (widget.user.role == UserRole.admin) {
+    screens.add(AdminPage(user: widget.user));
   }
+
+  return screens;
+}
 
   void _onItemTapped(int index) {
     setState(() {

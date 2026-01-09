@@ -25,7 +25,7 @@ class EventDetailsScreen extends StatelessWidget {
               onPressed: () {
                 // TODO : faire les actions nécessaires (edit/delete si admin)
               },
-              child: const Text('Faire le nécessaire'),
+              child: const Text('Get your place on event'),
             ),
           ],
         ),
