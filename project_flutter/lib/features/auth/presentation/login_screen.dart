@@ -161,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
           padding: const EdgeInsets.all(15),
         ),
         child: const Text(
-          'LOGIN WITH EMAIL ONLY',
+          'LOGIN WITH GOOGLE',
           style: TextStyle(
             color: Colors.white,
             letterSpacing: 1.2,
