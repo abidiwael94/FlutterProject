@@ -28,7 +28,6 @@ class EventService {
           title: data['title'] ?? '',
           description: data['description'] ?? '',
           date: eventDate,
-          adminId: data['adminId'] ?? '',
         );
       }).toList();
 

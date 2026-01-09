@@ -34,7 +34,6 @@ class _EventFormPageState extends State<EventFormPage> {
       title: titleCtrl.text.trim(),
       description: descCtrl.text.trim(),
       date: selectedDate!,
-      adminId: widget.event?.adminId ?? "zalfhlkhzfhpfihiafihae",
     );
 
     widget.event == null

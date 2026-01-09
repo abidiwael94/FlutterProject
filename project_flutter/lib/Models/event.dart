@@ -7,17 +7,16 @@ class Event {
   final String description;
   final DateTime date;
 
-  // Relations
-  final String adminId;
-  List<Reservation> reservations;
-  List<Favorite> favorites;
+
+  List<Reservation>? reservations;
+  List<Favorite>? favorites;
+
 
   Event({
     required this.id,
     required this.title,
     required this.description,
     required this.date,
-    required this.adminId,
     List<Reservation>? reservations,
     List<Favorite>? favorites,
   })  : reservations = reservations ?? [],
