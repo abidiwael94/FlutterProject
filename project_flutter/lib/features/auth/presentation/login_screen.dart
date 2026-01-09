@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:project_flutter/Models/user.dart';
 import 'package:project_flutter/core/constants/constants.dart';
+import 'package:project_flutter/features/auth/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -34,10 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: TextField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            style: const TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
+            style: const TextStyle(color: Colors.white, fontFamily: 'OpenSans'),
             decoration: const InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14),
@@ -64,10 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: TextField(
             controller: _passwordController,
             obscureText: true,
-            style: const TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
+            style: const TextStyle(color: Colors.white, fontFamily: 'OpenSans'),
             decoration: const InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14),
@@ -82,32 +79,69 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildLoginBtn() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 15),
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          // UI only
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          padding: const EdgeInsets.all(15),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
+    return Consumer<AuthProvider>(
+      builder: (context, auth, _) {
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 15),
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: auth.isLoading
+                ? null
+                : () async {
+                    final email = _emailController.text.trim();
+                    final password = _passwordController.text.trim();
+
+                    if (email.isEmpty || password.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Please fill all fields')),
+                      );
+                      return;
+                    }
+
+                    try {
+                      final user = await auth.loginUser(
+                        email: email,
+                        password: password,
+                      );
+
+                      if (user != null) {
+                        // Navigate to HomeScreen
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => HomeScreen(user: user),
+                          ),
+                        );
+                      }
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Login failed: $e')),
+                      );
+                    }
+                  },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              padding: const EdgeInsets.all(15),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              elevation: 5,
+            ),
+            child: auth.isLoading
+                ? const CircularProgressIndicator(color: Color(0xFF527DAA))
+                : const Text(
+                    'LOGIN',
+                    style: TextStyle(
+                      color: Color(0xFF527DAA),
+                      letterSpacing: 1.5,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'OpenSans',
+                    ),
+                  ),
           ),
-          elevation: 5,
-        ),
-        child: const Text(
-          'LOGIN',
-          style: TextStyle(
-            color: Color(0xFF527DAA),
-            letterSpacing: 1.5,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -230,6 +264,24 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  final User user;
+  const HomeScreen({super.key, required this.user});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Home')),
+      body: Center(
+        child: Text(
+          'Hello ${user.username}!',
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),
     );

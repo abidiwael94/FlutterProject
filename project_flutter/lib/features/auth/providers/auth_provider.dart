@@ -8,6 +8,19 @@ class AuthProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
+  Future<User?> loginUser({required String email, required String password}) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final user = await _authService.login(email: email, password: password);
+      return user;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+  
   Future<User?> registerUser({
     required String firstName,
     required String lastName,
