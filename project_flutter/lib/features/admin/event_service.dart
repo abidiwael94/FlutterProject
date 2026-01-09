@@ -11,7 +11,6 @@ class EventService {
     return _events.doc().id;
   }
 
-
   Stream<List<Event>> getEvents() {
     return _events.snapshots().map((snapshot) {
       return snapshot.docs.map<Event>((doc) {
@@ -36,7 +35,6 @@ class EventService {
     });
   }
 
-
   Future<void> updateEvent(Event event) async {
     await _events.doc(event.id).update({
       'title': event.title,
@@ -44,7 +42,6 @@ class EventService {
       'date': Timestamp.fromDate(event.date),
     });
   }
-
 
   Future<void> deleteEvent(String id) async {
     await _events.doc(id).delete();
