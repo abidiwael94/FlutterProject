@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:project_flutter/Models/user.dart';
 import 'package:project_flutter/core/constants/constants.dart';
 import 'package:project_flutter/core/utils/validators.dart';
 import 'package:project_flutter/core/views/custom_snack_bar.dart';
 import 'package:project_flutter/features/auth/providers/auth_provider.dart';
+import 'package:project_flutter/home.dart';
 import 'package:provider/provider.dart';
 import 'register_screen.dart';
 
@@ -246,24 +246,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  final User user;
-  const HomeScreen({super.key, required this.user});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Home')),
-      body: Center(
-        child: Text(
-          'Hello ${user.username}!',
-          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),
     );
