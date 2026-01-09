@@ -72,4 +72,24 @@ class AuthService {
       rethrow;
     }
   }
+
+  Future<void> logout() async {
+    try {
+      await _auth.signOut();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
+  /// example usage of logout in a widget:
+  /*
+  ElevatedButton(
+    onPressed: () async {
+      await AuthService().logout();
+      Navigator.pushReplacementNamed(context, '/login');
+    },
+    child: const Text('Logout'),
+  )
+  */
 }
