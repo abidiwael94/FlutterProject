@@ -4,46 +4,87 @@ import 'package:project_flutter/Models/event.dart';
 class EventService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
+  /// Reference to the 'events' collection
   CollectionReference get _events => _db.collection('events');
 
-
+  /// Generate a unique ID for new events
   String generateId() {
-    return _events.doc().id;
+    final id = _events.doc().id;
+    print("Generated new Event ID: $id");
+    return id;
   }
 
+  /// Stream all events from Firestore
   Stream<List<Event>> getEvents() {
+    print("Fetching events stream...");
     return _events.snapshots().map((snapshot) {
-      return snapshot.docs.map<Event>((doc) {
+      final events = snapshot.docs.map<Event>((doc) {
         final data = doc.data() as Map<String, dynamic>;
+        DateTime date;
 
-        return Event(
+        // Safely parse date
+        if (data['date'] is Timestamp) {
+          date = (data['date'] as Timestamp).toDate();
+        } else if (data['date'] is String) {
+          date = DateTime.parse(data['date']);
+        } else {
+          date = DateTime.now();
+        }
+
+        final event = Event(
           id: doc.id,
-          title: data['title'],
-          description: data['description'],
-          date: (data['date'] as Timestamp).toDate(),
+          title: data['title'] ?? 'No title',
+          description: data['description'] ?? '',
+          date: date,
         );
+
+        print("Loaded event: ${event.id} - ${event.title} - ${event.date}");
+        return event;
       }).toList();
+
+      print("Total events loaded: ${events.length}");
+      return events;
     });
   }
 
-
+  /// Create a new event
   Future<void> createEvent(Event event) async {
-    await _events.doc(event.id).set({
-      'title': event.title,
-      'description': event.description,
-      'date': Timestamp.fromDate(event.date),
-    });
+    try {
+      await _events.doc(event.id).set({
+        'title': event.title,
+        'description': event.description,
+        'date': Timestamp.fromDate(event.date),
+      });
+      print("Event created: ${event.id} - ${event.title}");
+    } catch (e) {
+      print("Error creating event: $e");
+      rethrow;
+    }
   }
 
+  /// Update an existing event
   Future<void> updateEvent(Event event) async {
-    await _events.doc(event.id).update({
-      'title': event.title,
-      'description': event.description,
-      'date': Timestamp.fromDate(event.date),
-    });
+    try {
+      await _events.doc(event.id).update({
+        'title': event.title,
+        'description': event.description,
+        'date': Timestamp.fromDate(event.date),
+      });
+      print("Event updated: ${event.id} - ${event.title}");
+    } catch (e) {
+      print("Error updating event: $e");
+      rethrow;
+    }
   }
 
+  /// Delete an event
   Future<void> deleteEvent(String id) async {
-    await _events.doc(id).delete();
+    try {
+      await _events.doc(id).delete();
+      print("Event deleted: $id");
+    } catch (e) {
+      print("Error deleting event: $e");
+      rethrow;
+    }
   }
 }

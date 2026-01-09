@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
       const EventListScreen(),
       const ReservationsScreen(),
       const FavoritesScreen(),
-      ProfileScreen(user: widget.user),
+      ProfileScreen(userId: widget.user.id),
     ];
 
     if (widget.user.role == UserRole.admin) {

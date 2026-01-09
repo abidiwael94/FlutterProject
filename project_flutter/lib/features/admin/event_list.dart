@@ -3,7 +3,6 @@ import 'package:project_flutter/Models/event.dart';
 import 'event_form.dart';
 import 'event_service.dart';
 
-
 class EventListPage extends StatefulWidget {
   const EventListPage({super.key});
 
@@ -17,6 +16,7 @@ class _EventListPageState extends State<EventListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text("Events")),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => Navigator.push(
@@ -27,9 +27,25 @@ class _EventListPageState extends State<EventListPage> {
       body: StreamBuilder<List<Event>>(
         stream: service.getEvents(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
+          // Print snapshot state for debugging
+          print("Snapshot has data: ${snapshot.hasData}");
+          print("Snapshot error: ${snapshot.error}");
+          print("Snapshot connectionState: ${snapshot.connectionState}");
 
-          final events = snapshot.data!;
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error}"));
+          }
+
+          final events = snapshot.data ?? [];
+          print("Number of events received: ${events.length}");
+          for (var e in events) {
+            print("Event: id=${e.id}, title=${e.title}");
+          }
+
           if (events.isEmpty) return const Center(child: Text("No events"));
 
           return ListView.builder(
@@ -53,7 +69,10 @@ class _EventListPageState extends State<EventListPage> {
                     ),
                     IconButton(
                       icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () => service.deleteEvent(e.id),
+                      onPressed: () {
+                        print("Deleting event id=${e.id}");
+                        service.deleteEvent(e.id);
+                      },
                     ),
                   ],
                 ),
