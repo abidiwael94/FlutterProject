@@ -105,7 +105,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
 
                       if (user != null) {
-                        // Navigate to HomeScreen
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
@@ -142,35 +141,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         );
       },
-    );
-  }
-
-  Widget _buildLoginWithEmailOnlyBtn() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      width: double.infinity,
-      child: OutlinedButton(
-        onPressed: () {
-          // UI only
-        },
-        style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: Colors.white),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-          padding: const EdgeInsets.all(15),
-        ),
-        child: const Text(
-          'LOGIN WITH GOOGLE',
-          style: TextStyle(
-            color: Colors.white,
-            letterSpacing: 1.2,
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-      ),
     );
   }
 
@@ -256,7 +226,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     _buildPasswordTF(),
                     const SizedBox(height: 20),
                     _buildLoginBtn(),
-                    _buildLoginWithEmailOnlyBtn(),
                     const SizedBox(height: 30),
                     _buildRegisterLink(),
                   ],
