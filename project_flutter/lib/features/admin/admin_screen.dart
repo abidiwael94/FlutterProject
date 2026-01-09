@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_flutter/Models/user.dart';
-import 'package:project_flutter/features/admin/event_list.dart';
+import 'package:project_flutter/features/admin/event_list_screen.dart';
 
 class AdminPage extends StatelessWidget {
   final User user;
