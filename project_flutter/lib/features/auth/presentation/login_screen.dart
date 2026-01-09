@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:project_flutter/Models/user.dart';
 import 'package:project_flutter/core/constants/constants.dart';
+import 'package:project_flutter/core/utils/validators.dart';
+import 'package:project_flutter/core/views/custom_snack_bar.dart';
 import 'package:project_flutter/features/auth/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 import 'register_screen.dart';
@@ -92,12 +94,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     final password = _passwordController.text.trim();
 
                     if (email.isEmpty || password.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Please fill all fields')),
-                      );
+                      CustomSnackBar.show(context, 'Please fill all fields');
                       return;
                     }
 
+                    if (!Validators.isValidEmail(email)) {
+                      CustomSnackBar.show(context, 'Please enter a valid email address');
+                      return;
+                    }
+
+                    if (!Validators.isValidPassword(password)) {
+                      CustomSnackBar.show(context, 'Password must be at least 8 characters');
+                      return;
+                    }
                     try {
                       final user = await auth.loginUser(
                         email: email,
@@ -113,9 +122,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                       }
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Login failed: $e')),
-                      );
+                      String cleanMessage = e.toString();
+
+                      if (cleanMessage.contains(']')) {
+                        cleanMessage = cleanMessage.split(']').last.trim();
+                      }
+
+                      CustomSnackBar.show(context, cleanMessage);
                     }
                   },
             style: ElevatedButton.styleFrom(
