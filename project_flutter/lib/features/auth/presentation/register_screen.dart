@@ -49,6 +49,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             style: const TextStyle(
               color: Colors.white,
               fontFamily: 'OpenSans',
+              fontSize: 14,
             ),
             decoration: InputDecoration(
               border: InputBorder.none,
@@ -84,7 +85,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           style: TextStyle(
             color: Color(0xFF527DAA),
             letterSpacing: 1.5,
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
             fontFamily: 'OpenSans',
           ),
@@ -103,7 +104,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               text: 'Already have an account? ',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 18,
+                fontSize: 14,
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -111,7 +112,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               text: 'Login',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 18,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -124,6 +125,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+      ),
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: GestureDetector(
@@ -151,7 +162,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 physics: const AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.symmetric(
                   horizontal: 40,
-                  vertical: 100,
+                  vertical: 120,
                 ),
                 child: Column(
                   children: [

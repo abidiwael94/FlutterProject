@@ -102,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
           style: TextStyle(
             color: Color(0xFF527DAA),
             letterSpacing: 1.5,
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
             fontFamily: 'OpenSans',
           ),
@@ -131,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
           style: TextStyle(
             color: Colors.white,
             letterSpacing: 1.2,
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: FontWeight.bold,
             fontFamily: 'OpenSans',
           ),
@@ -155,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
               text: "Don't have an account? ",
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 18,
+                fontSize: 14,
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -163,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
               text: 'Register',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 18,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
             ),
