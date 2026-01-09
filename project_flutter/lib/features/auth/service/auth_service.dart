@@ -7,7 +7,6 @@ class AuthService {
   final fbAuth.FirebaseAuth _auth = fbAuth.FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  /// Login with email & password
   Future<User?> login({required String email, required String password}) async {
     try {
       final credential = await _auth.signInWithEmailAndPassword(
@@ -17,7 +16,6 @@ class AuthService {
 
       final uid = credential.user!.uid;
 
-      // Fetch user data from Firestore
       final doc = await _firestore.collection('user').doc(uid).get();
       if (!doc.exists) return null;
 
