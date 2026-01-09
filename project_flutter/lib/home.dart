@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:project_flutter/Models/user.dart';
+import 'package:project_flutter/Models/user_role.dart';
+import 'package:project_flutter/features/admin/admin_screen.dart';
+import 'package:project_flutter/features/profile/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final User user;
@@ -12,14 +15,28 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
-  // Use a getter to build the screen list dynamically based on the current user
-  List<Widget> get _screens => [
-        const EventsScreen(),
-        const ReservationsScreen(),
-        const FavoritesScreen(),
-        ProfileScreen(user: widget.user),
-        if (widget.user.role == 'admin') const AdminScreen(),
-      ];
+  @override
+  void initState() {
+    super.initState();
+
+    // Print the user role to console
+    print('User role: ${widget.user.role}');
+  }
+
+  List<Widget> get _screens {
+    final screens = [
+      const EventsScreen(),
+      const ReservationsScreen(),
+      const FavoritesScreen(),
+      ProfilePage(admin: widget.user),
+    ];
+
+    if (widget.user.role == UserRole.admin) {
+      screens.add(AdminPage(user: widget.user));
+    }
+
+    return screens;
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -29,27 +46,47 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isAdmin = widget.user.role == 'admin';
+    final bool isAdmin = widget.user.role == UserRole.admin;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(_getAppBarTitle(_selectedIndex, isAdmin)),
         backgroundColor: const Color(0xFF398AE5),
       ),
-      body: _screens[_selectedIndex], 
-      
+      body: _screens[_selectedIndex],
+
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        onTap: (index) {
+          // Prevent invalid index
+          if (index < _screens.length) {
+            _onItemTapped(index);
+          }
+        },
         selectedItemColor: const Color(0xFF398AE5),
         items: [
-          const BottomNavigationBarItem(icon: Icon(Icons.event), label: 'Events'),
-          const BottomNavigationBarItem(icon: Icon(Icons.book_online), label: 'Reservations'),
-          const BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorites'),
-          const BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-          if (isAdmin)
-            const BottomNavigationBarItem(icon: Icon(Icons.admin_panel_settings), label: 'Admin'),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.event),
+            label: 'Events',
+          ),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.book_online),
+            label: 'Reservations',
+          ),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'Favorites',
+          ),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+          if (widget.user.role == UserRole.admin)
+            const BottomNavigationBarItem(
+              icon: Icon(Icons.admin_panel_settings),
+              label: 'Admin',
+            ),
         ],
       ),
     );
@@ -62,14 +99,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-
 // --- Events Screen ---
 class EventsScreen extends StatelessWidget {
   const EventsScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text('📅 Events Screen', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+      child: Text(
+        '📅 Events Screen',
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      ),
     );
   }
 }
@@ -80,7 +119,10 @@ class ReservationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text('🎟️ My Reservations', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+      child: Text(
+        '🎟️ My Reservations',
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      ),
     );
   }
 }
@@ -91,37 +133,10 @@ class FavoritesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text('❤️ Favorites Screen', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-    );
-  }
-}
-
-// --- Profile Screen ---
-class ProfileScreen extends StatelessWidget {
-  final User user;
-  const ProfileScreen({super.key, required this.user});
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.person, size: 80, color: Colors.blue),
-          Text('Profile: ${user.username}', style: const TextStyle(fontSize: 24)),
-          Text('Role: ${user.role}', style: const TextStyle(color: Colors.grey)),
-        ],
+      child: Text(
+        '❤️ Favorites Screen',
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
       ),
-    );
-  }
-}
-
-// --- Admin Screen ---
-class AdminScreen extends StatelessWidget {
-  const AdminScreen({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('🛡️ Admin Dashboard', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.red)),
     );
   }
 }
