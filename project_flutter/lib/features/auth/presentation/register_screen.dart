@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:project_flutter/core/constants/constants.dart';
+import 'package:project_flutter/features/auth/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -65,32 +67,74 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget _buildRegisterBtn() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          // UI only
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          padding: const EdgeInsets.all(15),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
+    return Consumer<AuthProvider>(
+      builder: (context, auth, _) {
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: auth.isLoading
+                ? null
+                : () async {
+                    final firstName = _firstNameController.text.trim();
+                    final lastName = _lastNameController.text.trim();
+                    final email = _emailController.text.trim();
+                    final password = _passwordController.text.trim();
+                    final confirmPassword = _confirmPasswordController.text
+                        .trim();
+
+                    if (password != confirmPassword) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Passwords do not match")),
+                      );
+                      return;
+                    }
+
+                    try {
+                      final user = await auth.registerUser(
+                        firstName: firstName,
+                        lastName: lastName,
+                        email: email,
+                        password: password,
+                      );
+
+                      if (user != null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Registration successful"),
+                          ),
+                        );
+                        Navigator.pop(context);
+                      }
+                    } catch (e) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text("Error: $e")));
+                    }
+                  },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              padding: const EdgeInsets.all(15),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              elevation: 5,
+            ),
+            child: auth.isLoading
+                ? const CircularProgressIndicator(color: Color(0xFF527DAA))
+                : const Text(
+                    'REGISTER',
+                    style: TextStyle(
+                      color: Color(0xFF527DAA),
+                      letterSpacing: 1.5,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'OpenSans',
+                    ),
+                  ),
           ),
-          elevation: 5,
-        ),
-        child: const Text(
-          'REGISTER',
-          style: TextStyle(
-            color: Color(0xFF527DAA),
-            letterSpacing: 1.5,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-      ),
+        );
+      },
     );
   }
 
