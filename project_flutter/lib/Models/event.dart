@@ -8,9 +8,10 @@ class Event {
   final DateTime date;
 
   // Relations
-  String adminId; // The admin who created this event
-  List<Reservation> reservations = [];
-  List<Favorite> favorites = [];
+  final String adminId;
+  List<Reservation> reservations;
+  List<Favorite> favorites;
+
   Event({
     required this.id,
     required this.title,
@@ -19,8 +20,6 @@ class Event {
     required this.adminId,
     List<Reservation>? reservations,
     List<Favorite>? favorites,
-  }) {
-    if (reservations != null) this.reservations = reservations;
-    if (favorites != null) this.favorites = favorites;
-  }
+  })  : reservations = reservations ?? [],
+        favorites = favorites ?? [];
 }
