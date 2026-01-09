@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 class EventListScreen extends StatefulWidget {
   const EventListScreen({super.key});
-  
+
   @override
   State<EventListScreen> createState() => _EventListScreenState();
 }
