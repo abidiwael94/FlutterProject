@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:project_flutter/core/constants/constants.dart';
+import 'package:project_flutter/core/utils/validators.dart';
+import 'package:project_flutter/core/views/custom_snack_bar.dart';
 import 'package:project_flutter/features/auth/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -83,13 +85,40 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     final confirmPassword = _confirmPasswordController.text
                         .trim();
 
-                    if (password != confirmPassword) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Passwords do not match")),
+                    // 1. Check for empty fields
+                    if (firstName.isEmpty ||
+                        lastName.isEmpty ||
+                        email.isEmpty ||
+                        password.isEmpty) {
+                      CustomSnackBar.show(context, 'Please fill in all fields');
+                      return;
+                    }
+
+                    // 2. Validate Email format
+                    if (!Validators.isValidEmail(email)) {
+                      CustomSnackBar.show(
+                        context,
+                        'Please enter a valid email address',
                       );
                       return;
                     }
 
+                    // 3. Validate Password length
+                    if (!Validators.isValidPassword(password)) {
+                      CustomSnackBar.show(
+                        context,
+                        'Password must be at least 8 characters long',
+                      );
+                      return;
+                    }
+
+                    // 4. Check if passwords match
+                    if (password != confirmPassword) {
+                      CustomSnackBar.show(context, 'Passwords do not match');
+                      return;
+                    }
+
+                    // 5. If all validations pass, proceed with registration
                     try {
                       final user = await auth.registerUser(
                         firstName: firstName,
@@ -99,17 +128,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       );
 
                       if (user != null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Registration successful"),
-                          ),
+                        CustomSnackBar.show(
+                          context,
+                          'Registration successful!',
+                          isError: false,
                         );
                         Navigator.pop(context);
                       }
                     } catch (e) {
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text("Error: $e")));
+                      // Using the cleaning logic we discussed earlier
+                      String cleanMessage = e.toString();
+                      if (cleanMessage.contains(']')) {
+                        cleanMessage = cleanMessage.split(']').last.trim();
+                      }
+                      CustomSnackBar.show(context, cleanMessage);
                     }
                   },
             style: ElevatedButton.styleFrom(
