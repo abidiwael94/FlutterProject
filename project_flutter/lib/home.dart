@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_flutter/Models/user.dart';
 import 'package:project_flutter/Models/user_role.dart';
+import 'package:project_flutter/events/presentation/event_list_screen.dart';
 import 'package:project_flutter/features/admin/admin_screen.dart';
 import 'package:project_flutter/features/profile/profile_screen.dart';
 
@@ -25,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Widget> get _screens {
     final screens = [
-      const EventsScreen(),
+      const EventListScreen(),
       const ReservationsScreen(),
       const FavoritesScreen(),
       ProfilePage(admin: widget.user),
@@ -99,19 +100,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-// --- Events Screen ---
-class EventsScreen extends StatelessWidget {
-  const EventsScreen({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        '📅 Events Screen',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-}
 
 // --- Reservations Screen ---
 class ReservationsScreen extends StatelessWidget {
