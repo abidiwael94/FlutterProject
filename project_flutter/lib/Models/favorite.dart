@@ -10,4 +10,22 @@ class Favorite {
     required this.eventId,
     required this.likedAt,
   });
+
+  factory Favorite.fromMap(Map<String, dynamic> map) {
+    return Favorite(
+      id: map['id'] ?? '',
+      userId: map['userId'] ?? '',
+      eventId: map['eventId'] ?? '',
+      likedAt: map['likedAt'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'userId': userId,
+      'eventId': eventId,
+      'likedAt': likedAt,
+    };
+  }
 }
