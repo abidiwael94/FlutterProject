@@ -24,7 +24,6 @@ class FavoriteScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => FavoriteProvider(),
       child: Scaffold(
-        appBar: AppBar(title: const Text('Favorites')),
         body: Consumer<FavoriteProvider>(
           builder: (context, favoriteProvider, _) {
             final favorites = favoriteProvider.favorites;

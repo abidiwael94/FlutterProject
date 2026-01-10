@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       providers: [ChangeNotifierProvider(create: (_) => AuthProvider())],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Firebase Demo',
+        title: 'Evently',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),

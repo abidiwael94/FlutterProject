@@ -1,20 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/widgets.dart';
 import 'package:project_flutter/Models/event.dart';
 
 class EventService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  /// Reference to the 'events' collection
   CollectionReference get _events => _db.collection('events');
 
-  /// Generate a unique ID for new events
   String generateId() {
     final id = _events.doc().id;
-    print("Generated new Event ID: $id");
+    debugPrint("Generated new Event ID: $id");
     return id;
   }
 
-  /// Stream all events from Firestore
   Stream<List<Event>> getEvents() {
     print("Fetching events stream...");
     return _events.snapshots().map((snapshot) {
@@ -22,7 +20,6 @@ class EventService {
         final data = doc.data() as Map<String, dynamic>;
         DateTime date;
 
-        // Safely parse date
         if (data['date'] is Timestamp) {
           date = (data['date'] as Timestamp).toDate();
         } else if (data['date'] is String) {
@@ -47,7 +44,6 @@ class EventService {
     });
   }
 
-  /// Create a new event
   Future<void> createEvent(Event event) async {
     try {
       await _events.doc(event.id).set({
@@ -62,7 +58,6 @@ class EventService {
     }
   }
 
-  /// Update an existing event
   Future<void> updateEvent(Event event) async {
     try {
       await _events.doc(event.id).update({
@@ -77,7 +72,6 @@ class EventService {
     }
   }
 
-  /// Delete an event
   Future<void> deleteEvent(String id) async {
     try {
       await _events.doc(id).delete();

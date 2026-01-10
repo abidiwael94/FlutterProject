@@ -12,7 +12,6 @@ class EventDetailsScreen extends StatelessWidget {
 
   const EventDetailsScreen({super.key, required this.event});
 
-  /// 🔥 Reserve event using Reservation model structure
   Future<void> _reserveEvent(BuildContext context) async {
     final user = FirebaseAuth.instance.currentUser;
 
@@ -26,7 +25,6 @@ class EventDetailsScreen extends StatelessWidget {
         'reservation',
       );
 
-      /// Check if already reserved
       final existing = await reservationsRef
           .where('userId', isEqualTo: user.uid)
           .where('eventId', isEqualTo: event.id)
@@ -37,10 +35,8 @@ class EventDetailsScreen extends StatelessWidget {
         return;
       }
 
-      /// Generate document reference to get ID
       final docRef = reservationsRef.doc();
 
-      /// Create reservation object
       final reservation = Reservation(
         id: docRef.id,
         userId: user.uid,
@@ -48,7 +44,6 @@ class EventDetailsScreen extends StatelessWidget {
         reservedAt: DateTime.now().toIso8601String(),
       );
 
-      /// Save to Firestore
       await docRef.set({
         'id': reservation.id,
         'userId': reservation.userId,
@@ -77,7 +72,6 @@ class EventDetailsScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          /// 🎨 Background Gradient
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -98,7 +92,6 @@ class EventDetailsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                /// 🖼️ Event Image
                 SizedBox(
                   height: 260,
                   width: double.infinity,
@@ -129,13 +122,11 @@ class EventDetailsScreen extends StatelessWidget {
                   ),
                 ),
 
-                /// 📄 Content
                 Padding(
                   padding: const EdgeInsets.fromLTRB(24, 24, 24, 40),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      /// 📅 Date Badge
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 16,
@@ -169,7 +160,6 @@ class EventDetailsScreen extends StatelessWidget {
 
                       const SizedBox(height: 30),
 
-                      /// 📝 About this event
                       Container(
                         width: double.infinity,
                         padding: const EdgeInsets.all(22),
@@ -205,7 +195,6 @@ class EventDetailsScreen extends StatelessWidget {
 
                       const SizedBox(height: 40),
 
-                      /// 🎯 Reserve Button
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
