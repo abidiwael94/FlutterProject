@@ -8,7 +8,7 @@ class FavoriteScreen extends StatelessWidget {
   const FavoriteScreen({super.key});
 
   Future<Event?> _getEventById(String eventId) async {
-    final doc = await FirebaseFirestore.instance.collection('events').doc(eventId).get();
+    final doc = await FirebaseFirestore.instance.collection('event').doc(eventId).get();
     if (!doc.exists) return null;
     final data = doc.data()!;
     return Event(
@@ -62,7 +62,7 @@ class FavoriteScreen extends StatelessWidget {
                         },
                       ),
                       onTap: () {
-                        // TODO: Navigate to EventDetailsScreen
+
                       },
                     );
                   },
