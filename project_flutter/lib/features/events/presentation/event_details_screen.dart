@@ -12,7 +12,6 @@ class EventDetailsScreen extends StatelessWidget {
 
   const EventDetailsScreen({super.key, required this.event});
 
-  /// 🔥 Reserve event using Reservation model structure
   Future<void> _reserveEvent(BuildContext context) async {
     final user = FirebaseAuth.instance.currentUser;
 

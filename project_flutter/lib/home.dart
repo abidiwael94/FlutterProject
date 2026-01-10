@@ -5,6 +5,8 @@ import 'package:project_flutter/features/events/presentation/event_list_screen.d
 import 'package:project_flutter/features/events/providers/event_provider.dart';
 import 'package:project_flutter/features/admin/admin_screen.dart';
 import 'package:project_flutter/features/profile/profile_screen.dart';
+import 'package:project_flutter/features/reservation/providers/reservation_provider.dart';
+import 'package:project_flutter/features/reservation/presentation/reservations_screen.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -25,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
       create: (_) => EventProvider(),
       child: EventListScreen(user: widget.user), 
     ),
-    const ReservationsScreen(),
+    ReservationsScreen(user: widget.user),
     const FavoritesScreen(),
     ProfileScreen(userId: widget.user.id),
   ];
@@ -95,19 +97,6 @@ class _HomeScreenState extends State<HomeScreen> {
     List<String> titles = ['Events', 'Reservations', 'Favorites', 'Profile'];
     if (isAdmin) titles.add('Admin Panel');
     return titles[index];
-  }
-}
-
-class ReservationsScreen extends StatelessWidget {
-  const ReservationsScreen({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        '🎟️ My Reservations',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-    );
   }
 }
 

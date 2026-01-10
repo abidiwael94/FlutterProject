@@ -10,4 +10,21 @@ class Reservation {
     required this.eventId,
     required this.reservedAt,
   });
+
+  factory Reservation.fromMap(Map<String, dynamic> data, String documentId) {
+    return Reservation(
+      id: documentId,
+      userId: data['userId'] ?? '',
+      eventId: data['eventId'] ?? '',
+      reservedAt: data['reservedAt'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'userId': userId,
+      'eventId': eventId,
+      'reservedAt': reservedAt,
+    };
+  }
 }
