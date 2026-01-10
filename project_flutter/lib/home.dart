@@ -4,6 +4,8 @@ import 'package:project_flutter/Models/user_role.dart';
 import 'package:project_flutter/features/events/presentation/event_list_screen.dart';
 import 'package:project_flutter/features/events/providers/event_provider.dart';
 import 'package:project_flutter/features/admin/admin_screen.dart';
+import 'package:project_flutter/features/favorite/presentation/favorite_screen.dart';
+import 'package:project_flutter/features/favorite/providers/favorite_provider.dart';
 import 'package:project_flutter/features/profile/profile_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +28,11 @@ class _HomeScreenState extends State<HomeScreen> {
       child: EventListScreen(user: widget.user), 
     ),
     const ReservationsScreen(),
-    const FavoritesScreen(),
+    ChangeNotifierProvider(
+      create: (_) => FavoriteProvider(),
+      child: FavoriteScreen(), 
+    ),
+
     ProfileScreen(userId: widget.user.id),
   ];
 
@@ -111,15 +117,3 @@ class ReservationsScreen extends StatelessWidget {
   }
 }
 
-class FavoritesScreen extends StatelessWidget {
-  const FavoritesScreen({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        '❤️ Favorites Screen',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-}
