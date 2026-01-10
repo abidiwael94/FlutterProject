@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_flutter/core/views/custom_snack_bar.dart';
 import 'package:provider/provider.dart';
 import '../providers/event_provider.dart';
 import '../../../core/views/event_card.dart';
@@ -63,14 +64,18 @@ class _EventListScreenState extends State<EventListScreen> {
             },
             onFavorite: () async {
               await provider.addFavorite(event, userId);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('${event.title} Added to favorite')),
+              CustomSnackBar.show(
+                context, 
+                '${event.title} added to favorites', 
+                isError: false,
               );
             },
             onReserve: () async {
               await provider.addReservation(event, userId);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Reserved for ${event.title}')),
+             CustomSnackBar.show(
+                context, 
+                'Reserved for ${event.title}', 
+                isError: false,
               );
             },
           );
