@@ -21,10 +21,9 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Widget> get _screens {
 
   final screens = [
-    // On met EventProvider autour de EventListScreen et on passe le user correctement
     ChangeNotifierProvider(
       create: (_) => EventProvider(),
-      child: EventListScreen(user: widget.user), // <-- user passe ici
+      child: EventListScreen(user: widget.user), 
     ),
     const ReservationsScreen(),
     const FavoritesScreen(),
